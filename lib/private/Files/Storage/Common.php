@@ -451,6 +451,7 @@ abstract class Common implements Storage, ILockingStorage {
 			}
 			return false;
 		} catch (\Exception $e) {
+			\OC::$server->getLogger()->info("External storage not available: " . $e->getMessage());
 			return false;
 		}
 	}
