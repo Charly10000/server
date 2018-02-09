@@ -82,7 +82,20 @@ class SimpleFile implements ISimpleFile  {
 	 * @return string
 	 */
 	public function getContent() {
-		return $this->file->getContent();
+		$res = $this->file->getContent();
+
+		if ($res === false) {
+			$this->file->delete();
+
+			$parent = $this->file->getParent();
+			while($parent->stat() === false) {
+				$tmp = $parent;
+				$parent = $parent->getParent();
+				$tmp->delete();
+			}
+		}
+
+		return $res;
 	}
 
 	/**
